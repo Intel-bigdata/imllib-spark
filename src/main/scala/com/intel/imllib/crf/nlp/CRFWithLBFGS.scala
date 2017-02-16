@@ -165,7 +165,7 @@ private class CostFun(
 
     val bcWeights = taggers.context.broadcast(weigths)
     val n = weigths.length
-    lazy val treeDepth = math.ceil(math.log(taggers.partitions.length) / (math.log(2) * 2)).toInt
+    lazy val treeDepth = math.max(math.ceil(math.log(taggers.partitions.length) / (math.log(2) * 2)).toInt,2)
 
     val (expected, obj) = taggers.treeAggregate((BDV.zeros[Double](n), 0.0))(
       seqOp = (c, v) => {

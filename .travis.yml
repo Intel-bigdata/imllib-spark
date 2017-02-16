@@ -1,0 +1,30 @@
+sudo: required
+language: scala
+scala:
+  - 2.11.8
+install:
+  - imllib=$(pwd)
+  - cd /opt/
+  - wget http://d3kbcqa49mib13.cloudfront.net/spark-2.0.2-bin-hadoop2.7.tgz
+  - tar -xzf spark-2.0.2-bin-hadoop2.7.tgz
+  - wget http://d3kbcqa49mib13.cloudfront.net/hadoop-2.7.3.tar.gz
+  - tar -xzf hadoop-2.7.3.tar.gz
+  - wget http://d3kbcqa49mib13.cloudfront.net/scala-2.11.8.tgz
+  - tar -zxf scala-2.11.8.tgz
+  - export SPARK_HOME=/opt/spark-2.0.2-bin-hadoop2.7
+  - export HADOOP_HOME=/opt/hadoop-2.7.3
+  - export SCALA_HOME=/opt/scala-2.11.8
+  - export PATH=$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$SCALA_HOME/bin:$SPARK_HOME/bin:$PATH
+  - cd ${imllib}
+  - cp ./travis/spark-env.sh /opt/spark-2.0.2-bin-hadoop2.7/conf/
+  - cp ./travis/core-site.xml /opt/hadoop-2.7.3/etc/hadoop/
+  - cp ./travis/hdfs-site.xml /opt/hadoop-2.7.3/etc/hadoop/
+  - cp ./travis/mapred-site.xml /opt/hadoop-2.7.3/etc/hadoop/
+script:
+  - sbt clean package
+  - sudo -E ./travis/configssh.sh
+  - sudo -E ./travis/restart-hadoop-spark.sh
+  - hdfs dfs -put ./data /
+  - sudo -E ./bin/runFM.sh
+  - sudo -E ./bin/runFFM.sh
+  - sudo -E ./bin/runCRF.sh

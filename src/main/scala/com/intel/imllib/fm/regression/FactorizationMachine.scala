@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.intel.imllib.fm.regression
 
 import org.json4s.DefaultFormats
@@ -77,87 +94,10 @@ class FMModel(val task: Int,
   override protected def formatVersion: String = "1.0"
 
   override def save(sc: SparkContext, path: String): Unit = {
-/*
-    val data = FMModel.SaveLoadV1_0.Data(factorMatrix, weightVector, intercept, min, max, task)
-    FMModel.SaveLoadV1_0.save(sc, path, data)
-*/
   }
 }
 
 object FMModel{
-//object FMModel extends Loader[FMModel] {
-/*
-  private object SaveLoadV1_0 {
-    def thisFormatVersion = "1.0"
-
-    def thisClassName = "org.apache.spark.mllib.regression.FMModel"
-
-    /* Model data for model import/export */
-    case class Data(factorMatrix: Matrix, weightVector: Option[Vector], intercept: Double,
-                    min: Double, max: Double, task: Int)
-
-    def save(sc: SparkContext, path: String, data: Data): Unit = {
-      val sqlContext = new SQLContext(sc)
-      import sqlContext.implicits._
-      // Create JSON metadata.
-      val metadata = compact(render(
-        ("class" -> this.getClass.getName) ~ ("version" -> thisFormatVersion) ~
-          ("numFeatures" -> data.factorMatrix.numCols) ~ ("numFactors" -> data.factorMatrix.numRows)
-          ~ ("min" -> data.min) ~ ("max" -> data.max) ~ ("task" -> data.task)))
-      sc.parallelize(Seq(metadata), 1).saveAsTextFile(metadataPath(path))
-
-      // Create Parquet data.
-      val dataRDD: DataFrame = sc.parallelize(Seq(data), 1).toDF()
-      dataRDD.write.parquet(dataPath(path))
-    }
-
-    def load(sc: SparkContext, path: String): FMModel = {
-      val sqlContext = new SQLContext(sc)
-      // Load Parquet data.
-      val dataRDD = sqlContext.parquetFile(dataPath(path))
-      // Check schema explicitly since erasure makes it hard to use match-case for checking.
-      checkSchema[Data](dataRDD.schema)
-      val dataArray = dataRDD.select("task", "factorMatrix", "weightVector", "intercept", "min", "max").take(1)
-      assert(dataArray.length == 1, s"Unable to load FMModel data from: ${dataPath(path)}")
-      val data = dataArray(0)
-      val task = data.getInt(0)
-      val factorMatrix = data.getAs[Matrix](1)
-      val weightVector = data.getAs[Option[Vector]](2)
-      val intercept = data.getDouble(3)
-      val min = data.getDouble(4)
-      val max = data.getDouble(5)
-      new FMModel(task, factorMatrix, weightVector, intercept, min, max)
-    }
-  }
-
-  override def load(sc: SparkContext, path: String): FMModel = {
-    implicit val formats = DefaultFormats
-
-    val (loadedClassName, version, metadata) = loadMetadata(sc, path)
-    val classNameV1_0 = SaveLoadV1_0.thisClassName
-
-    (loadedClassName, version) match {
-      case (className, "1.0") if className == classNameV1_0 =>
-        val numFeatures = (metadata \ "numFeatures").extract[Int]
-        val numFactors = (metadata \ "numFactors").extract[Int]
-        val model = SaveLoadV1_0.load(sc, path)
-        assert(model.factorMatrix.numCols == numFeatures,
-          s"FMModel.load expected $numFeatures features," +
-            s" but factorMatrix had columns of size:" +
-            s" ${model.factorMatrix.numCols}")
-        assert(model.factorMatrix.numRows == numFactors,
-          s"FMModel.load expected $numFactors factors," +
-            s" but factorMatrix had rows of size:" +
-            s" ${model.factorMatrix.numRows}")
-        model
-
-      case _ => throw new Exception(
-        s"FMModel.load did not recognize model with (className, format version):" +
-          s"($loadedClassName, $version).  Supported:\n" +
-          s"  ($classNameV1_0, 1.0)")
-    }
-  }
-*/
 }
 
 /**
