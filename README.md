@@ -2,9 +2,9 @@
 A package contains three Spark-based implementations. It includes
  * Factorization Machines (LibFM)
  * Field-Awared Factorization Machine (FFM)
- * Conditional Random Fields (CRFs)
+ * Conditional Random Fields (CRF)
 
-This package can be imported as a dependency in other codes. Then, all functions of LibFM, FFM and CRFs in this package can be used.
+This package can be imported as a dependency in other codes. Then, all functions of LibFM, FFM and CRF in this package can be used.
 
 # Build from Source
 ```scala
@@ -51,6 +51,10 @@ libraryDependencies += "com.intel" % "imllib_2.11" % "0.0.1"
 ```scala
 import com.intel.imllib._
 ```
+# Test Examples
+There are three shell scripts in `bin/` for testing LibFM, FFM, and CRF respectively.
+You can first modify the script with necessary changes, such as hostname, port for hadoop, etc.
+Then run the script to test if the algorithm works.
 
 ---
 ## FM-Spark
@@ -68,7 +72,7 @@ information to each feature to have formation like:
         label field1:feat1:val1 field2:feat2:val2
 
 ## CRF-Spark
-A Spark-based implementation of Conditional Random Fields (CRFs) for segmenting/labeling sequential data.
+A Spark-based implementation of Conditional Random Fields (CRF) for segmenting/labeling sequential data.
 
 `CRF-Spark` provides following features:
 * Training in parallel based on Spark RDD
