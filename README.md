@@ -54,6 +54,10 @@ libraryDependencies += "com.intel" % "imllib_2.11" % "0.0.1"
 ```scala
 import com.intel.imllib._
 ```
+# Test Examples
+There are three shell scripts in `bin/` for testing LibFM, FFM, and CRF respectively.
+You can first modify the script with necessary changes, such as hostname, port for hadoop, etc.
+Then run the script to test if the algorithm works.
 
 # Test Examples
 There are three shell scripts in `bin/` for testing LibFM, FFM, and CRF respectively. The script runs in a local mode Spark with the data on hadoop.
