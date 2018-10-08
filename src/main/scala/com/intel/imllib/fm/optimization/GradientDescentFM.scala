@@ -234,7 +234,8 @@ object GradientDescentFM {
       val bcWeights = data.context.broadcast(weights)
       // Sample a subset (fraction miniBatchFraction) of the total data
       // compute and sum up the subgradients on this subset (this is one map-reduce)
-      val wSum = data.treeAggregate(BDV(bcWeights.value.toArray))(
+	  val sub_sample = data.sample(withReplacement = false, fraction = miniBatchFraction)
+      val wSum = sub_sample.treeAggregate(BDV(bcWeights.value.toArray))(
         seqOp = (c, v) => {
           gradient.asInstanceOf[FMGradient].computeFM(v._2, v._1, fromBreeze(c), stepSize, i, regParam)
         },
